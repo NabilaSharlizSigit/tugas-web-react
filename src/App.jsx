@@ -12,6 +12,11 @@ const initialProducts = [
 
 export default function App() {
   const [products, setProducts] = useState(initialProducts)
+  const [search, setSearch] = useState('')
+
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
     <div className="container">
@@ -24,17 +29,28 @@ export default function App() {
       </header>
 
       <div className="toolbar">
+        <input
+          className="search"
+          type="text"
+          placeholder="Cari nama produk..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <span className="count">{products.length} produk</span>
       </div>
 
-      <div className="grid">
-        {products.map((p) => (
-          <ProductCard key={p.id} product={p} />
-        ))}
-      </div>
+      {filteredProducts.length === 0 ? (
+        <p className="empty">Produk tidak ditemukan.</p>
+      ) : (
+        <div className="grid">
+          {filteredProducts.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+      )}
 
       <p className="footer-info">
-        Menampilkan {products.length} dari {products.length} produk
+        Menampilkan {filteredProducts.length} dari {products.length} produk
       </p>
     </div>
   )
