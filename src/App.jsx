@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import ProductCard from './components/ProductCard'
+import ProductModal from './components/ProductModal'
 
 const initialProducts = [
   { id: 1, name: 'Pulpen', price: 5000 },
@@ -13,10 +14,17 @@ const initialProducts = [
 export default function App() {
   const [products, setProducts] = useState(initialProducts)
   const [search, setSearch] = useState('')
+  const [modal, setModal] = useState(null) // { type: 'add' } | null
 
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   )
+
+  const handleSave = (data) => {
+    const newId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1
+    setProducts([...products, { id: newId, ...data }])
+    setModal(null)
+  }
 
   return (
     <div className="container">
@@ -25,7 +33,9 @@ export default function App() {
           <h1>Manajemen Produk</h1>
           <p className="subtitle">Kelola daftar produk dan harga dalam satu tempat.</p>
         </div>
-        <button className="btn btn-primary">+ Tambah Produk</button>
+        <button className="btn btn-primary" onClick={() => setModal({ type: 'add' })}>
+          + Tambah Produk
+        </button>
       </header>
 
       <div className="toolbar">
@@ -52,6 +62,10 @@ export default function App() {
       <p className="footer-info">
         Menampilkan {filteredProducts.length} dari {products.length} produk
       </p>
+
+      {modal?.type === 'add' && (
+        <ProductModal onClose={() => setModal(null)} onSave={handleSave} />
+      )}
     </div>
   )
 }
