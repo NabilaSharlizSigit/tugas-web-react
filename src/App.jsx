@@ -55,7 +55,7 @@ export default function App() {
         <input
           className="search"
           type="text"
-          placeholder="Cari nama produk..."
+          placeholder="Cari nama produk disini"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
