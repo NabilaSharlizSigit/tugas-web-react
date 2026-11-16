@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import ProductCard from './components/ProductCard'
 import ProductModal from './components/ProductModal'
+import DeleteModal from './components/DeleteModal' // BARU
 
 const initialProducts = [
   { id: 1, name: 'Pulpen', price: 5000 },
@@ -14,13 +15,12 @@ const initialProducts = [
 export default function App() {
   const [products, setProducts] = useState(initialProducts)
   const [search, setSearch] = useState('')
-  const [modal, setModal] = useState(null) // { type: 'add' | 'edit', product? } | null
+  const [modal, setModal] = useState(null) // { type: 'add' | 'edit' | 'delete', product? } | null
 
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   )
 
-  // BARU: handleSave sekarang menangani tambah dan edit
   const handleSave = (data) => {
     if (modal.type === 'edit') {
       setProducts(
@@ -30,6 +30,12 @@ export default function App() {
       const newId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1
       setProducts([...products, { id: newId, ...data }])
     }
+    setModal(null)
+  }
+
+  // BARU: hapus produk yang dipilih
+  const handleDelete = () => {
+    setProducts(products.filter((p) => p.id !== modal.product.id))
     setModal(null)
   }
 
@@ -64,7 +70,8 @@ export default function App() {
             <ProductCard
               key={p.id}
               product={p}
-              onEdit={() => setModal({ type: 'edit', product: p })} // BARU
+              onEdit={() => setModal({ type: 'edit', product: p })}
+              onDelete={() => setModal({ type: 'delete', product: p })} // BARU
             />
           ))}
         </div>
@@ -74,12 +81,20 @@ export default function App() {
         Menampilkan {filteredProducts.length} dari {products.length} produk
       </p>
 
-      {/* BARU: modal tampil untuk tipe add dan edit */}
       {(modal?.type === 'add' || modal?.type === 'edit') && (
         <ProductModal
           product={modal.product}
           onClose={() => setModal(null)}
           onSave={handleSave}
+        />
+      )}
+
+      {/* BARU: modal konfirmasi hapus */}
+      {modal?.type === 'delete' && (
+        <DeleteModal
+          product={modal.product}
+          onClose={() => setModal(null)}
+          onConfirm={handleDelete}
         />
       )}
     </div>
