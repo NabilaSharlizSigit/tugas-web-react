@@ -1,0 +1,174 @@
+.container { 
+  max-width: 1000px; 
+  margin: 0 auto; 
+  padding: 32px 24px; 
+}
+
+.header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  gap: 16px; 
+}
+
+.header h1 { 
+  margin: 0; 
+  font-size: 28px; 
+  color: rgb(250, 112, 176);
+}
+
+.subtitle { 
+  margin: 4px 0 0; 
+  color: #64748b; 
+  font-size: 14px; 
+}
+
+.toolbar { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin: 24px 0 16px; 
+  gap: 16px; 
+}
+
+.count { 
+  font-size: 13px; 
+  color: #475569; 
+  margin-left: auto; 
+}
+
+.search { 
+  width: 100%; 
+  max-width: 320px; 
+  padding: 9px 12px; 
+  border: 1px solid #cbd5e1; 
+  border-radius: 6px; 
+  font-size: 13px; 
+}
+
+.search:focus { 
+  outline: 2px solid #93c5fd; 
+}
+
+.empty { 
+  text-align: center; 
+  color: #64748b; 
+  padding: 40px 0; 
+}
+
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
+  gap: 16px; 
+}
+
+.card { 
+  background: #fff; 
+  border-radius: 10px; 
+  padding: 16px; 
+  box-shadow: 0 1px 4px rgba(0,0,0,.12); 
+}
+
+.card-id { 
+  font-size: 11px; 
+  color: #64748b; 
+}
+
+.card-name { 
+  margin: 4px 0; 
+  font-size: 20px; 
+}
+
+.card-price { 
+  margin: 0 0 16px; 
+  font-size: 20px; 
+  font-weight: 700; 
+  color: #be8de9; 
+}
+
+.card-actions { 
+  display: flex; 
+  gap: 8px; 
+}
+
+.card-actions .btn { 
+  flex: 1; 
+}
+
+.footer-info { 
+  margin-top: 24px; 
+  font-size: 12px; 
+  color: #475569; 
+}
+
+.btn { 
+  border: 1px solid transparent; 
+  border-radius: 6px; 
+  padding: 8px 14px; 
+  font-size: 13px; 
+  font-weight: 600; 
+  background: #fff; 
+}
+
+.btn-primary { 
+  background: #be8de9; 
+  color: #fff; 
+}
+
+.btn-primary:hover { 
+  background: #be8de9; 
+}
+
+.btn-outline { 
+  border-color: #be8de9; 
+  color: #be8de9; 
+}
+
+.btn-outline-danger { 
+  border-color: #e379cb; 
+  color: #e379cb; 
+} 
+
+.btn-danger { 
+  background: #e379cb; 
+  color: #fff; 
+}
+
+.delete-modal { 
+  align-items: center; 
+  text-align: center; 
+}
+
+.trash-icon { 
+  width: 48px; 
+  height: 48px; 
+  display: grid; 
+  place-items: center; 
+  background: #fee2e2; 
+  border-radius: 10px; 
+  font-size: 22px; 
+  margin-bottom: 8px; 
+}
+
+.delete-info { 
+  width: 100%; 
+  text-align: left; 
+  border: 1px solid #e2e8f0; 
+  border-radius: 8px; 
+  padding: 12px; 
+  display: flex; 
+  flex-direction: 
+  column; gap: 2px; 
+}
+
+.delete-info strong { 
+  font-size: 18px; 
+}
+
+.delete-info .card-price { 
+  font-size: 18px; margin: 0; 
+}
+
+.delete-modal .modal-actions { 
+  width: 100%; 
+}
