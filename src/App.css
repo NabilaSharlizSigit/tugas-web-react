@@ -82,7 +82,7 @@
   margin: 0 0 16px; 
   font-size: 20px; 
   font-weight: 700; 
-  color: #1d4ed8; 
+  color: #be8de9; 
 }
 
 .card-actions { 
@@ -110,26 +110,26 @@
 }
 
 .btn-primary { 
-  background: #1d4ed8; 
+  background: #be8de9; 
   color: #fff; 
 }
 
 .btn-primary:hover { 
-  background: #1e40af; 
+  background: #be8de9; 
 }
 
 .btn-outline { 
-  border-color: #1d4ed8; 
-  color: #1d4ed8; 
+  border-color: #be8de9; 
+  color: #be8de9; 
 }
 
 .btn-outline-danger { 
-  border-color: #dc2626; 
-  color: #dc2626; 
-}
+  border-color: #e379cb; 
+  color: #e379cb; 
+} 
 
 .btn-danger { 
-  background: #dc2626; 
+  background: #e379cb; 
   color: #fff; 
 }
 
