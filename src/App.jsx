@@ -14,15 +14,22 @@ const initialProducts = [
 export default function App() {
   const [products, setProducts] = useState(initialProducts)
   const [search, setSearch] = useState('')
-  const [modal, setModal] = useState(null) // { type: 'add' } | null
+  const [modal, setModal] = useState(null) // { type: 'add' | 'edit', product? } | null
 
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   )
 
+  // BARU: handleSave sekarang menangani tambah dan edit
   const handleSave = (data) => {
-    const newId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1
-    setProducts([...products, { id: newId, ...data }])
+    if (modal.type === 'edit') {
+      setProducts(
+        products.map((p) => (p.id === modal.product.id ? { ...p, ...data } : p))
+      )
+    } else {
+      const newId = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1
+      setProducts([...products, { id: newId, ...data }])
+    }
     setModal(null)
   }
 
@@ -54,7 +61,11 @@ export default function App() {
       ) : (
         <div className="grid">
           {filteredProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard
+              key={p.id}
+              product={p}
+              onEdit={() => setModal({ type: 'edit', product: p })} // BARU
+            />
           ))}
         </div>
       )}
@@ -63,8 +74,13 @@ export default function App() {
         Menampilkan {filteredProducts.length} dari {products.length} produk
       </p>
 
-      {modal?.type === 'add' && (
-        <ProductModal onClose={() => setModal(null)} onSave={handleSave} />
+      {/* BARU: modal tampil untuk tipe add dan edit */}
+      {(modal?.type === 'add' || modal?.type === 'edit') && (
+        <ProductModal
+          product={modal.product}
+          onClose={() => setModal(null)}
+          onSave={handleSave}
+        />
       )}
     </div>
   )
