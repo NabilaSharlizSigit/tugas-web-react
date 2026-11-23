@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
   res.status(201).json(newProduct)
 })
 
-// BARU: PUT /api/products/:id : edit produk
+// PUT /api/products/:id : edit produk
 router.put('/:id', (req, res) => {
   const id = Number(req.params.id)
   const products = readProducts()
@@ -46,6 +46,18 @@ router.put('/:id', (req, res) => {
   products[index] = { ...products[index], ...data }
   writeProducts(products)
   res.json(products[index])
+})
+
+// BARU: DELETE /api/products/:id : hapus produk
+router.delete('/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const products = readProducts()
+  if (!products.some((p) => p.id === id)) {
+    return res.status(404).json({ message: 'Produk tidak ditemukan.' })
+  }
+
+  writeProducts(products.filter((p) => p.id !== id))
+  res.status(204).end()
 })
 
 export default router
