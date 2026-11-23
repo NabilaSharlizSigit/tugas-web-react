@@ -1,26 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react' // BARU: useEffect
 import './App.css'
 import ProductCard from './components/ProductCard'
 import ProductModal from './components/ProductModal'
-import DeleteModal from './components/DeleteModal' // BARU
-
-const initialProducts = [
-  { id: 1, name: 'Pulpen', price: 5000 },
-  { id: 2, name: 'Buku Tulis', price: 12000 },
-  { id: 3, name: 'Spidol', price: 8000 },
-  { id: 4, name: 'Penggaris', price: 6000 },
-  { id: 5, name: 'Penghapus', price: 3000 },
-]
+import DeleteModal from './components/DeleteModal'
+import { getProducts } from './api' // BARU
 
 export default function App() {
-  const [products, setProducts] = useState(initialProducts)
+  const [products, setProducts] = useState([]) // BARU: awalnya kosong, diisi dari API
+  const [loading, setLoading] = useState(true) // BARU
+  const [error, setError] = useState('') // BARU
   const [search, setSearch] = useState('')
   const [modal, setModal] = useState(null) // { type: 'add' | 'edit' | 'delete', product? } | null
+
+  // BARU: ambil data produk dari backend saat halaman dibuka
+  useEffect(() => {
+    getProducts()
+      .then((data) => setProducts(data))
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false))
+  }, [])
 
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   )
 
+  // Masih lokal, akan diganti ke API di commit berikutnya
   const handleSave = (data) => {
     if (modal.type === 'edit') {
       setProducts(
@@ -33,7 +37,6 @@ export default function App() {
     setModal(null)
   }
 
-  // BARU: hapus produk yang dipilih
   const handleDelete = () => {
     setProducts(products.filter((p) => p.id !== modal.product.id))
     setModal(null)
@@ -55,14 +58,19 @@ export default function App() {
         <input
           className="search"
           type="text"
-          placeholder="Cari nama produk disini"
+          placeholder="🔍 Cari nama produk..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <span className="count">{products.length} produk</span>
       </div>
 
-      {filteredProducts.length === 0 ? (
+      {/* BARU: status loading dan error */}
+      {loading ? (
+        <p className="empty">Memuat produk...</p>
+      ) : error ? (
+        <p className="empty">Gagal memuat produk: {error}</p>
+      ) : filteredProducts.length === 0 ? (
         <p className="empty">Produk tidak ditemukan.</p>
       ) : (
         <div className="grid">
@@ -71,7 +79,7 @@ export default function App() {
               key={p.id}
               product={p}
               onEdit={() => setModal({ type: 'edit', product: p })}
-              onDelete={() => setModal({ type: 'delete', product: p })} // BARU
+              onDelete={() => setModal({ type: 'delete', product: p })}
             />
           ))}
         </div>
@@ -89,7 +97,6 @@ export default function App() {
         />
       )}
 
-      {/* BARU: modal konfirmasi hapus */}
       {modal?.type === 'delete' && (
         <DeleteModal
           product={modal.product}
