@@ -1,5 +1,6 @@
 import { Router } from 'express'
-import { readProducts } from '../store.js'
+import { readProducts, writeProducts } from '../store.js'
+import { validateProduct } from '../validate.js'
 
 const router = Router()
 
@@ -15,6 +16,19 @@ router.get('/:id', (req, res) => {
     return res.status(404).json({ message: 'Produk tidak ditemukan.' })
   }
   res.json(product)
+})
+
+// POST /api/products : tambah produk
+router.post('/', (req, res) => {
+  const { error, data } = validateProduct(req.body)
+  if (error) return res.status(400).json({ message: error })
+
+  const products = readProducts()
+  const id = products.length ? Math.max(...products.map((p) => p.id)) + 1 : 1
+  const newProduct = { id, ...data }
+
+  writeProducts([...products, newProduct])
+  res.status(201).json(newProduct)
 })
 
 export default router
